@@ -6,7 +6,6 @@
 #include<chrono>
 #include<thread>
 
-//Ccomment o test repo.
 
 using namespace std;
 void Game();
@@ -70,7 +69,7 @@ public:
 	{
 		cls();
 		SetTextColor(Red); 
-		cout << "Select a valid option!" << endl;
+		Log("Select a valid option!", true);
 		SetTextColor(White);
 
 	}
