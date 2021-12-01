@@ -347,7 +347,6 @@ void GameHeader(Creature playerCreature, Creature computerCreature, int roundCou
 	cout << "==========================================" << endl;
 }
 
-
 struct Menus
 {
 	enum menuOptions
@@ -548,9 +547,6 @@ void Game()
 	
 	
 }
-
-
-
 
 int main()
 {
