@@ -1,107 +1,10 @@
 ﻿#include<iostream>
-#include<Windows.h>
-#include<stdio.h>
-#include<cstring> 
-#include<time.h>
-#include<chrono>
-#include<thread>
 
+#include "MacroLib.h"
 
-//using namespace std;
-void Game();
-
-class Interface
-{
-public:
-
-	enum Colors
-	{
-		White = 7,
-		Red = 12,
-		Blue = 9,
-		Yellow = 14,
-		Green = 10
-	};
-
-	void Log(const char* message, bool endLine)
-	{
-		if (endLine == true)
-		{
-			std::cout << message << std::endl;
-
-		}
-		else
-		{
-			std::cout << message;
-		}
-	}
-
-	void EndLine()
-	{
-		std::cout << std::endl;
-	}
-
-	int CheckInput(char input[])
-	{
-		int i, output;
-		output = 0;
-
-		for (i = 0; isdigit(input[i]); ++i) 
-		{
-			output = 10 * output + (input[i] - '0');
-		}
-
-		return output;
-	}
-
-	void InvalidOption()
-	{
-		cls();
-		SetTextColor(Red); 
-		Log("Select a valid option!", true);
-		SetTextColor(White);
-
-	}
-	
-	void LoadingDots()
-	{
-		Sleep(1);
-		Log(".", false);
-		Sleep(1);
-		Log(".", false);
-		Sleep(1);
-		Log(".", false);
-		Sleep(1);
-
-	}
-
-	void cls(char fill = ' ') //Clear screen function
-	{
-		COORD tl = { 0,0 };
-		CONSOLE_SCREEN_BUFFER_INFO s;
-		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-		GetConsoleScreenBufferInfo(console, &s);
-		DWORD written, cells = s.dwSize.X * s.dwSize.Y;
-		FillConsoleOutputCharacter(console, fill, cells, tl, &written);
-		FillConsoleOutputAttribute(console, s.wAttributes, cells, tl, &written);
-		SetConsoleCursorPosition(console, tl);
-	} 
-
-	void SetTextColor(int color) //Set text color function
-	{
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-	}
-	
-	void Sleep(int time)
-	{
-		std::this_thread::sleep_for(std::chrono::seconds(time)); //Pause thread for X seconds.
-	}
-};
 
 struct Creature
 {
-	Interface UI;
-
 	const float maxHealth = 100;
 	const int maxEnergy = 50;
 
@@ -160,7 +63,7 @@ struct Creature
 	{
 		if (energy < specialAttackCost)
 		{
-			UI.Log("Not Enough Energy!",true); 
+			Log("Not Enough Energy!",true); 
 		}
 		else
 		{
@@ -199,7 +102,7 @@ struct Creature
 	{
 		if (hasHealed == true)
 		{
-			UI.Log("Already Healed this turn!", true);
+			Log("Already Healed this turn!", true);
 			Sleep(1);
 		}
 		else
@@ -252,7 +155,6 @@ struct Creature
 
 void HitCheck(Creature playerCreature, Creature computerCreature, float* playerHealth, float* computerHealth)
 {
-	Interface UI;
 
 	float chanceToHit = static_cast <float> (rand()) / static_cast <float> (RAND_MAX); //Assign "n" a random float value between 0.0 and 1.0.
 	chanceToHit = chanceToHit * 100; //Get "n" into a range from 0 to 100.
@@ -262,9 +164,9 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		//Player Hit Check
 		if (chanceToHit < playerCreature.hitChance)
 		{
-			UI.SetTextColor(UI.Green);
-			UI.Log("Player hit enemy!", true);
-			UI.SetTextColor(UI.White);
+			SetTextColor(Green);
+			Log("Player hit enemy!", true);
+			SetTextColor(White);
 
 			computerCreature.health -= playerCreature.damage;
 			chanceToHit = 0; //Resets "n" so that the next calculation can be done the same way as the first one.
@@ -272,15 +174,15 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		}
 		else
 		{
-			UI.SetTextColor(UI.Yellow);
-			UI.Log("Player Missed!", true);
-			UI.SetTextColor(UI.White);
+			SetTextColor(Yellow);
+			Log("Player Missed!", true);
+			SetTextColor(White);
 			chanceToHit = 0;
 		}
 	}
 	
 
-	UI.EndLine();
+	EndLine();
 	Sleep(1);
 
 	if (computerCreature.hasAttacked || computerCreature.hasSpecialAttacked)
@@ -291,9 +193,9 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 
 		if (chanceToHit < computerCreature.hitChance)
 		{
-			UI.SetTextColor(UI.Red);
-			UI.Log("Enemy hit enemy!", true);
-			UI.SetTextColor(UI.White);
+			SetTextColor(Red);
+			Log("Enemy hit enemy!", true);
+			SetTextColor(White);
 
 			playerCreature.health -= computerCreature.damage;
 			chanceToHit = 0;
@@ -301,9 +203,9 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		}
 		else
 		{
-			UI.SetTextColor(UI.Green);
-			UI.Log("Enemy Missed!", true);
-			UI.SetTextColor(UI.White);
+			SetTextColor(Green);
+			Log("Enemy Missed!", true);
+			SetTextColor(White);
 			chanceToHit = 0;
 		}
 	}
@@ -314,95 +216,38 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 
 void GameHeader(Creature playerCreature, Creature computerCreature, int roundCounter)
 {
-	Interface UI;
 
-	UI.Log("==========================================", true); 
+	Log("==========================================", true); 
 
 	//Player Info
-	UI.Log("Your Health: ",false);
-	UI.SetTextColor(UI.Red);
+	Log("Your Health: ",false);
+	SetTextColor(Red);
 	std::cout << playerCreature.health << "/100";
-	UI.SetTextColor(UI.White);
+	SetTextColor(White);
 
-	UI.Log(" Your Energy: ", false);
-	UI.SetTextColor(UI.Blue);
+	Log(" Your Energy: ", false);
+	SetTextColor(Blue);
 	std::cout << playerCreature.energy << "/50";;
-	UI.SetTextColor(UI.White);
-	UI.EndLine();
-	UI.EndLine();
+	SetTextColor(White);
+	EndLine();
+	EndLine();
 
 	//Enemy Info
-	UI.Log("Enemy Health: ", false);
-	UI.SetTextColor(UI.Red);
+	Log("Enemy Health: ", false);
+	SetTextColor(Red);
 	std::cout << computerCreature.health << "/100";
-	UI.SetTextColor(UI.White);
-	UI.EndLine();
+	SetTextColor(White);
+	EndLine();
 
 	//Turn Info
-	UI.Log("Round: ", false);
-	UI.SetTextColor(UI.Yellow);
+	Log("Round: ", false);
+	SetTextColor(Yellow);
 	std::cout << roundCounter;
-	UI.SetTextColor(UI.White);
-	UI.EndLine();
+	SetTextColor(White);
+	EndLine();
 
-	UI.Log("==========================================", true);
+	Log("==========================================", true);
 }
-
-struct Menus
-{
-	enum menuOptions
-	{
-		Option1 = 1,
-		Option2 = 2,
-	};
-
-	char userInput[10000] = { 0 };
-	int newUserInput = 0;
-
-	Interface UI; 
-	
-	int ActionMenu()
-	{
-		UI.EndLine();
-		UI.Log("Choose your action!", true);
-		UI.Log("1. Attack", true);
-		UI.Log("2. Special Attack", true);
-		UI.Log("3. Recharge", true);
-		UI.Log("4. Dodge", true);
-		UI.Log("5. Heal", true);
-
-		std::cin >> userInput;
-
-		return UI.CheckInput(userInput);
-	}
-
-	void MainMenu()
-	{
-		
-		UI.Log("Welcome to my turn-based game project! Select an option to begin.", true);
-		UI.Log("1. Start Game", true);
-		UI.Log("2. Exit", true);
-
-		std::cin >> userInput;
-
-		newUserInput = UI.CheckInput(userInput);
-
-		switch (newUserInput)
-		{
-		case Option1:
-			UI.cls();
-			Game();
-			break;
-		case Option2:
-			exit(0);
-			break;
-		default:
-			UI.InvalidOption();
-			break;
-		}
-
-	}
-};
 
 void Game()
 {
@@ -415,8 +260,6 @@ void Game()
 		Heal = 5 
 	};
 
-	Interface UI;
-	Menus menus;
 	Creature playerCreature;
 	Creature computerCreature;
 
@@ -441,7 +284,7 @@ void Game()
 		//Player Actions
 		while (playerCreature.endTurn == false && playerCreature.moveCounter < maxMoves)
 		{
-			switch (menus.ActionMenu())
+			switch (ActionMenu())
 			{
 
 			case Attack:
@@ -465,14 +308,14 @@ void Game()
 				playerCreature.Heal();
 				break;
 			default:
-				UI.InvalidOption();
+				InvalidOption();
 				GameHeader(playerCreature, computerCreature, roundCounter);
 				break;
 			}
 		}
 			
-		UI.EndLine();
-		UI.Sleep(1);  
+		EndLine();
+		Sleep(1);  
 
 		//Computer Actions
 		while (computerCreature.endTurn == false && computerCreature.moveCounter < maxMoves)
@@ -505,13 +348,13 @@ void Game()
 				break;
 			default:
 				GameHeader(playerCreature, computerCreature,roundCounter);
-				UI.InvalidOption();
+				InvalidOption();
 				break;
 			}
 		}
 		
-		UI.EndLine();
-		UI.Sleep(1);
+		EndLine();
+		Sleep(1);
 
 		//Checks if any creature hit each other.
 		HitCheck(playerCreature, computerCreature, &playerCreature.health, &computerCreature.health);
@@ -526,31 +369,29 @@ void Game()
 
 		roundCounter++;
 
-		UI.EndLine();
-		UI.LoadingDots();
-		UI.cls();
+		EndLine();
+		LoadingDots();
+		cls(' ');
 
 	}
 
 	if (playerCreature.health <= 0 )
 	{
-		UI.Log("Enemy Wins", true);
+		Log("Enemy Wins", true);
 	}
 	else if (computerCreature.health <= 0)
 	{
-		UI.Log("Player Wins", true);
+		Log("Player Wins", true);
 	}
 
-	
 	
 }
 
 int main()
 {
-	Menus menus;
 	srand(unsigned int(time(NULL)));
 
-	menus.MainMenu();
+	MainMenu();
 
 	return 0;
 }
