@@ -77,11 +77,11 @@ public:
 	void LoadingDots()
 	{
 		Sleep(1);
-		cout << ".";
+		Log(".", false);
 		Sleep(1);
-		cout << ".";
+		Log(".", false);
 		Sleep(1);
-		cout << ".";
+		Log(".", false);
 		Sleep(1);
 
 	}
