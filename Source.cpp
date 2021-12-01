@@ -6,7 +6,6 @@
 #include<chrono>
 #include<thread>
 
-//Ola Jennie.
 
 using namespace std;
 void Game();
@@ -101,6 +100,8 @@ public:
 
 struct Creature
 {
+	Interface UI;
+
 	const float maxHealth = 100;
 	const int maxEnergy = 50;
 
@@ -159,7 +160,7 @@ struct Creature
 	{
 		if (energy < specialAttackCost)
 		{
-			cout << "Not Enough Energy!" << endl;
+			UI.Log("Not Enough Energy!",true); 
 		}
 		else
 		{
@@ -198,9 +199,7 @@ struct Creature
 	{
 		if (hasHealed == true)
 		{
-			
-			cout << "Already Healed this turn!" << endl;
-			
+			UI.Log("Already Healed this turn!", true);
 			Sleep(1);
 		}
 		else
@@ -264,7 +263,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		if (chanceToHit < playerCreature.hitChance)
 		{
 			UI.SetTextColor(UI.Green);
-			cout << "Player hit enemy!" << endl;
+			UI.Log("Player hit enemy!", true);
 			UI.SetTextColor(UI.White);
 
 			computerCreature.health -= playerCreature.damage;
@@ -274,7 +273,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		else
 		{
 			UI.SetTextColor(UI.Yellow);
-			cout << "Player Missed!" << endl;
+			UI.Log("Player Missed!", true);
 			UI.SetTextColor(UI.White);
 			chanceToHit = 0;
 		}
@@ -293,7 +292,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		if (chanceToHit < computerCreature.hitChance)
 		{
 			UI.SetTextColor(UI.Red);
-			cout << "Enemy hit player!" << endl;
+			UI.Log("Enemy hit enemy!", true);
 			UI.SetTextColor(UI.White);
 
 			playerCreature.health -= computerCreature.damage;
@@ -303,7 +302,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		else
 		{
 			UI.SetTextColor(UI.Green);
-			cout << "Enemy Missed!" << endl;
+			UI.Log("Enemy Missed!", true);
 			UI.SetTextColor(UI.White);
 			chanceToHit = 0;
 		}
@@ -317,15 +316,15 @@ void GameHeader(Creature playerCreature, Creature computerCreature, int roundCou
 {
 	Interface UI;
 
-	cout << "==========================================" << endl;
+	UI.Log("==========================================", true); 
 
 	//Player Info
-	cout << "Your Health: ";
+	UI.Log("Your Health: ",false);
 	UI.SetTextColor(UI.Red);
 	cout << playerCreature.health << "/100";
 	UI.SetTextColor(UI.White);
 
-	cout << " Your Energy: ";
+	UI.Log(" Your Energy: ", false);
 	UI.SetTextColor(UI.Blue);
 	cout << playerCreature.energy << "/50";;
 	UI.SetTextColor(UI.White);
@@ -333,20 +332,20 @@ void GameHeader(Creature playerCreature, Creature computerCreature, int roundCou
 	cout << endl;
 
 	//Enemy Info
-	cout << "Enemy Health: ";
+	UI.Log("Enemy Health: ", false);
 	UI.SetTextColor(UI.Red);
 	cout << computerCreature.health << "/100";
 	UI.SetTextColor(UI.White);
 	cout << endl;
 
 	//Turn Info
-	cout << "Round: ";
+	UI.Log("Round: ", false);
 	UI.SetTextColor(UI.Yellow);
 	cout << roundCounter;
 	UI.SetTextColor(UI.White);
 	cout << endl;
 
-	cout << "==========================================" << endl;
+	UI.Log("==========================================", true);
 }
 
 struct Menus
@@ -360,10 +359,8 @@ struct Menus
 	char userInput[10000] = { 0 };
 	int newUserInput = 0;
 
-	Interface UI;
+	Interface UI; 
 	
-	
-
 	int ActionMenu()
 	{
 		UI.EndLine();
