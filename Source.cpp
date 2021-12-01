@@ -7,7 +7,7 @@
 #include<thread>
 
 
-using namespace std;
+//using namespace std;
 void Game();
 
 class Interface
@@ -94,7 +94,7 @@ public:
 	
 	void Sleep(int time)
 	{
-		this_thread::sleep_for(chrono::seconds(time)); //Pause thread for X seconds.
+		std::this_thread::sleep_for(std::chrono::seconds(time)); //Pause thread for X seconds.
 	}
 };
 
@@ -280,7 +280,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 	}
 	
 
-	cout << endl;
+	UI.EndLine();
 	Sleep(1);
 
 	if (computerCreature.hasAttacked || computerCreature.hasSpecialAttacked)
@@ -321,29 +321,29 @@ void GameHeader(Creature playerCreature, Creature computerCreature, int roundCou
 	//Player Info
 	UI.Log("Your Health: ",false);
 	UI.SetTextColor(UI.Red);
-	cout << playerCreature.health << "/100";
+	std::cout << playerCreature.health << "/100";
 	UI.SetTextColor(UI.White);
 
 	UI.Log(" Your Energy: ", false);
 	UI.SetTextColor(UI.Blue);
-	cout << playerCreature.energy << "/50";;
+	std::cout << playerCreature.energy << "/50";;
 	UI.SetTextColor(UI.White);
-	cout << endl;
-	cout << endl;
+	UI.EndLine();
+	UI.EndLine();
 
 	//Enemy Info
 	UI.Log("Enemy Health: ", false);
 	UI.SetTextColor(UI.Red);
-	cout << computerCreature.health << "/100";
+	std::cout << computerCreature.health << "/100";
 	UI.SetTextColor(UI.White);
-	cout << endl;
+	UI.EndLine();
 
 	//Turn Info
 	UI.Log("Round: ", false);
 	UI.SetTextColor(UI.Yellow);
-	cout << roundCounter;
+	std::cout << roundCounter;
 	UI.SetTextColor(UI.White);
-	cout << endl;
+	UI.EndLine();
 
 	UI.Log("==========================================", true);
 }
@@ -371,7 +371,7 @@ struct Menus
 		UI.Log("4. Dodge", true);
 		UI.Log("5. Heal", true);
 
-		cin >> userInput;
+		std::cin >> userInput;
 
 		return UI.CheckInput(userInput);
 	}
@@ -383,7 +383,7 @@ struct Menus
 		UI.Log("1. Start Game", true);
 		UI.Log("2. Exit", true);
 
-		cin >> userInput;
+		std::cin >> userInput;
 
 		newUserInput = UI.CheckInput(userInput);
 
@@ -445,23 +445,23 @@ void Game()
 			{
 
 			case Attack:
-				cout << "Player used Attack!" << endl;
+				std::cout << "Player used Attack!" << std::endl;
 				playerCreature.Attack();
 				break;
 			case SpecialAttack:
-				cout << "Player used Special Attack!" << endl;
+				std::cout << "Player used Special Attack!" << std::endl;
 				playerCreature.SpecialAttack();
 				break;
 			case Recharge:
-				cout << "Player used Recharge!" << endl;
+				std::cout << "Player used Recharge!" << std::endl;
 				playerCreature.Recharge(computerCreature, &computerCreature.hitChance);
 				break;
 			case Dodge:
-				cout << "Player used Dodge!" << endl;
+				std::cout << "Player used Dodge!" << std::endl;
 				playerCreature.Dodge(computerCreature, &computerCreature.hitChance);
 				break;
 			case Heal:
-				cout << "Player used Heal!" << endl;
+				std::cout << "Player used Heal!" << std::endl;
 				playerCreature.Heal();
 				break;
 			default:
@@ -471,7 +471,7 @@ void Game()
 			}
 		}
 			
-		cout << endl;
+		UI.EndLine();
 		UI.Sleep(1);  
 
 		//Computer Actions
@@ -484,23 +484,23 @@ void Game()
 			{
 
 			case Attack:
-				cout << "Enemy used Attack!" << endl;
+				std::cout << "Enemy used Attack!" << std::endl;
 				computerCreature.Attack();
 				break;
 			case SpecialAttack:
-				cout << "Enemy used Special Attack!" << endl;
+				std::cout << "Enemy used Special Attack!" << std::endl;
 				computerCreature.SpecialAttack();
 				break;
 			case Recharge:
-				cout << "Enemy used Recharge!" << endl;
+				std::cout << "Enemy used Recharge!" << std::endl;
 				computerCreature.Recharge(playerCreature, &playerCreature.hitChance);
 				break;
 			case Dodge:
-				cout << "Enemy used Dodge!" << endl;
+				std::cout << "Enemy used Dodge!" << std::endl;
 				computerCreature.Dodge(playerCreature, &playerCreature.hitChance);
 				break;
 			case Heal:
-				cout << "Enemy used Heal!" << endl;
+				std::cout << "Enemy used Heal!" << std::endl;
 				computerCreature.Heal();
 				break;
 			default:
@@ -510,7 +510,7 @@ void Game()
 			}
 		}
 		
-		cout << endl;
+		UI.EndLine();
 		UI.Sleep(1);
 
 		//Checks if any creature hit each other.
@@ -526,7 +526,7 @@ void Game()
 
 		roundCounter++;
 
-		cout << endl;
+		UI.EndLine();
 		UI.LoadingDots();
 		UI.cls();
 
@@ -534,13 +534,11 @@ void Game()
 
 	if (playerCreature.health <= 0 )
 	{
-		cout << "Enemy Wins!" << endl;
-
+		UI.Log("Enemy Wins", true);
 	}
 	else if (computerCreature.health <= 0)
 	{
-		cout << "Player Wins!" << endl;
-
+		UI.Log("Player Wins", true);
 	}
 
 	
