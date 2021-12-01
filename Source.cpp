@@ -6,19 +6,8 @@
 #include<chrono>
 #include<thread>
 
-
 using namespace std;
 void Game();
-
-enum menuOptions
-{
-	Option1 = 1,
-	Option2 = 2,
-	Option3 = 3,
-	Option4 = 4,
-	Option5 = 5,
-};
-
 
 class Interface
 {
@@ -32,7 +21,6 @@ public:
 		Yellow = 14,
 		Green = 10
 	};
-
 
 	void Log(const char* message, bool endLine)
 	{
@@ -362,22 +350,28 @@ void GameHeader(Creature playerCreature, Creature computerCreature, int roundCou
 
 struct Menus
 {
-	Interface UI;
-	
+	enum menuOptions
+	{
+		Option1 = 1,
+		Option2 = 2,
+	};
+
 	char userInput[10000] = { 0 };
 	int newUserInput = 0;
+
+	Interface UI;
+	
 	
 
 	int ActionMenu()
 	{
 		UI.EndLine();
 		UI.Log("Choose your action!", true);
-		//cout << "Choose your action!" << endl;
-		cout << "1. Attack" << endl;
-		cout << "2. Special Attack" << endl;
-		cout << "3. Recharge" << endl;
-		cout << "4. Dodge" << endl;
-		cout << "5. Heal" << endl;
+		UI.Log("1. Attack", true);
+		UI.Log("2. Special Attack", true);
+		UI.Log("3. Recharge", true);
+		UI.Log("4. Dodge", true);
+		UI.Log("5. Heal", true);
 
 		cin >> userInput;
 
@@ -386,12 +380,10 @@ struct Menus
 
 	void MainMenu()
 	{
-		Interface UI;
 		
-
-		cout << "Welcome to my turn-based game project! Select an option to begin." << endl;
-		cout << "1. Start Game" << endl;
-		cout << "2. Exit" << endl;
+		UI.Log("Welcome to my turn-based game project! Select an option to begin.", true);
+		UI.Log("1. Start Game", true);
+		UI.Log("2. Exit", true);
 
 		cin >> userInput;
 
