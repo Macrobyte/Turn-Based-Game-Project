@@ -5,44 +5,48 @@
 
 struct Creature
 {
+	//Set max health and energy here.
 	const float maxHealth = 100;
+	const int minEnergy = 0;
 	const int maxEnergy = 50;
 
+	//Set damage of attacks here.
 	const int maxAttackDamage = 10;
 	const int minAttackDamage = 1;
 	const int maxSpecialDamage = 20;
 	const int minSpecialDamage = 5;
 
+	//Set skill cost here.
 	const int specialAttackCost = 50;
 
+	//Chances
 	const float attackChance = 80.0f;
 	const float specialAttackChance = 50.0f;
 	const float rechargeHitChanceDecrease = 10.0f;
 	const float dodgeHitChance = 30.0f;
 
+	//Charge Rates
 	const int defaultChargeRate = 2;
 	const int rechargeChargeRate = 4;
 	const int dodgeChargeRate = defaultChargeRate / 2;
 
+	//Creature stats
 	float health = 0;
 	int energy = 0;
 	int damage = 0;
-	
 	float hitChance = 0; 
 	int energyRechargeRate = 0;
-
-	bool endTurn = false;
 	int moveCounter = 0;
-
-	bool hasHealed = false;
 	int ammountToHeal = 0;
-	const int minEnergy = 0;
-
+	bool hasHealed = false;
 	bool hasAttacked = false;
 	bool hasSpecialAttacked = false;
 	bool hasRecharged = false;
 	bool hasDodged = false;
 
+	bool endTurn = false;
+
+	//Stats handling
 	void Setup()
 	{
 		health = maxHealth;
@@ -50,6 +54,32 @@ struct Creature
 		energyRechargeRate = defaultChargeRate;
 	}
 
+	void EnergyCharge()
+	{
+		energy += energyRechargeRate;
+
+		if (energy > maxEnergy)
+		{
+			energy = maxEnergy;
+		}
+
+	}
+
+	void ResetStats()
+	{
+		hitChance = 0;
+		energyRechargeRate = defaultChargeRate;
+		damage = 0;
+		endTurn = false;
+		hasHealed = false;
+		moveCounter = 0;
+		hasAttacked = false;
+		hasSpecialAttacked = false;
+		hasRecharged = false;
+		hasDodged = false;
+	}
+
+	//Creature Moves
 	void Attack()
 	{
 		hitChance += attackChance;
@@ -126,31 +156,7 @@ struct Creature
 		}
 	}
 
-	void EnergyCharge()
-	{
-		energy += energyRechargeRate;
-		//float energyIncrease = energy - energyRechargeRate;
 
-		if (energy > maxEnergy)
-		{
-			energy = maxEnergy;
-		}
-
-	}
-
-	void ResetStats()
-	{
-		hitChance = 0;
-		energyRechargeRate = defaultChargeRate;
-		damage = 0;
-		endTurn = false;
-		hasHealed = false;
-		moveCounter = 0;
-		hasAttacked = false;
-		hasSpecialAttacked = false;
-		hasRecharged = false;
-		hasDodged = false;
-	}
 };
 
 void HitCheck(Creature playerCreature, Creature computerCreature, float* playerHealth, float* computerHealth)
@@ -288,23 +294,23 @@ void Game()
 			{
 
 			case Attack:
-				std::cout << "Player used Attack!" << std::endl;
+				Log("Player used Attack!", true);
 				playerCreature.Attack();
 				break;
 			case SpecialAttack:
-				std::cout << "Player used Special Attack!" << std::endl;
+				Log("Player used Special Attack!", true);
 				playerCreature.SpecialAttack();
 				break;
 			case Recharge:
-				std::cout << "Player used Recharge!" << std::endl;
+				Log("Player used Recharge!", true);
 				playerCreature.Recharge(computerCreature, &computerCreature.hitChance);
 				break;
 			case Dodge:
-				std::cout << "Player used Dodge!" << std::endl;
+				Log("Player used Dodge!", true);
 				playerCreature.Dodge(computerCreature, &computerCreature.hitChance);
 				break;
 			case Heal:
-				std::cout << "Player used Heal!" << std::endl;
+				Log("Player used Heal!", true);
 				playerCreature.Heal();
 				break;
 			default:
@@ -327,23 +333,23 @@ void Game()
 			{
 
 			case Attack:
-				std::cout << "Enemy used Attack!" << std::endl;
+				Log("Enemy used Attack!", true);
 				computerCreature.Attack();
 				break;
 			case SpecialAttack:
-				std::cout << "Enemy used Special Attack!" << std::endl;
+				Log("Enemy used Special Attack!", true);
 				computerCreature.SpecialAttack();
 				break;
 			case Recharge:
-				std::cout << "Enemy used Recharge!" << std::endl;
+				Log("Enemy used Recharge!", true);
 				computerCreature.Recharge(playerCreature, &playerCreature.hitChance);
 				break;
 			case Dodge:
-				std::cout << "Enemy used Dodge!" << std::endl;
+				Log("Enemy used Dodge!", true);
 				computerCreature.Dodge(playerCreature, &playerCreature.hitChance);
 				break;
 			case Heal:
-				std::cout << "Enemy used Heal!" << std::endl;
+				Log("Enemy used Heal!", true);
 				computerCreature.Heal();
 				break;
 			default:
@@ -377,14 +383,20 @@ void Game()
 
 	if (playerCreature.health <= 0 )
 	{
+		SetTextColor(Red);
 		Log("Enemy Wins", true);
+		SetTextColor(White);
+		EndLine();
 	}
 	else if (computerCreature.health <= 0)
 	{
+		SetTextColor(Green);
 		Log("Player Wins", true);
+		SetTextColor(White);
+		EndLine();
 	}
 
-	
+	GameOverMenu();	
 }
 
 int main()

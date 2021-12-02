@@ -22,6 +22,7 @@ void Sleep(int time);
 //Menus.cpp
 int ActionMenu();
 void MainMenu();
+void GameOverMenu();
 
 //Game.cpp
 void Game();

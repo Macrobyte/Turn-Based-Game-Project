@@ -25,7 +25,7 @@
 		std::cout << std::endl;
 	}
 
-	int CheckInput(char input[])
+	int CheckInput(char input[])//Turns char input to int and makes sure it's not longer than one digit in the decimal system
 	{
 		int i, output;
 		output = 0;
