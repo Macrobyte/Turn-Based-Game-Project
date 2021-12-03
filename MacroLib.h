@@ -1,5 +1,13 @@
 #pragma once
 
+#include<Windows.h>
+#include<iostream>
+#include<stdio.h>
+#include<time.h>
+#include<chrono>
+#include<thread>
+#include<string>
+
 //Colors for use with SetTextColor()
 enum Colors
 {
@@ -30,6 +38,7 @@ void LoadingDots();
 void cls(char fill);
 void SetTextColor(int color);
 void Sleep(int time);
+void ConsoleTitle(std::wstring title);
 
 //Menus.cpp
 int ActionMenu();

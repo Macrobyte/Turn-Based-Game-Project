@@ -1,6 +1,4 @@
-﻿#include<iostream>
-
-#include "MacroLib.h"
+﻿#include "MacroLib.h"
 
 
 struct Creature
@@ -11,8 +9,8 @@ struct Creature
 	const int maxEnergy = 50;
 
 	//Set damage of attacks here.
-	const int maxAttackDamage = 10;
-	const int minAttackDamage = 1;
+	const int maxAttackDamage = 50;
+	const int minAttackDamage = 50;
 	const int maxSpecialDamage = 20;
 	const int minSpecialDamage = 5;
 
@@ -200,7 +198,7 @@ void HitCheck(Creature playerCreature, Creature computerCreature, float* playerH
 		if (chanceToHit < computerCreature.hitChance)
 		{
 			SetTextColor(Red);
-			Log("Enemy hit enemy!", true);
+			Log("Enemy hit Player!", true);
 			SetTextColor(White);
 
 			playerCreature.health -= computerCreature.damage;
@@ -401,6 +399,8 @@ void Game()
 
 int main()
 {
+	ConsoleTitle(TEXT("Turn Based Game"));
+
 	srand(unsigned int(time(NULL)));
 
 	MainMenu();

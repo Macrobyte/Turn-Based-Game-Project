@@ -1,10 +1,3 @@
-#include<iostream>
-#include<Windows.h>
-#include<stdio.h>
-#include<time.h>
-#include<chrono>
-#include<thread>
-
 #include"MacroLib.h"
 
 	void Log(const char* message, bool endLine)
@@ -79,4 +72,10 @@
 	void Sleep(int time)
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(time)); //Pause thread for X seconds.
+	}
+
+	void ConsoleTitle(std::wstring title)
+	{
+		
+		SetConsoleTitle(title.c_str());
 	}
