@@ -9,8 +9,8 @@ struct Creature
 	const int maxEnergy = 50;
 
 	//Set damage of attacks here.
-	const int maxAttackDamage = 50;
-	const int minAttackDamage = 50;
+	const int maxAttackDamage = 10;
+	const int minAttackDamage = 1;
 	const int maxSpecialDamage = 20;
 	const int minSpecialDamage = 5;
 
