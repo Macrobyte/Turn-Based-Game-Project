@@ -26,7 +26,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MacroLib.h">
+    <ClInclude Include="MacroLibV1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

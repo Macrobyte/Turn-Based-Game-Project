@@ -1,4 +1,4 @@
-#include"MacroLib.h"
+#include"MacroLibV1.h"
 
 	void Log(const char* message, bool endLine)
 	{
